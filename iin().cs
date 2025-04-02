@@ -35,5 +35,7 @@ lb_weekend = iin(ls_day, ls_days[])
 
 // Here’s another example, this time with numeric data:
 
+if iin(ll_employee_id, {123, 456, 789}) then
 
-
+// You can ask: how did I overload a global function in PowerScript? It's impossible! Of course, impossible. But for those who have read this:
+// https://github.com/Ursego/PowerBuilder/blob/main/Overloading%20global%20functions%20(undocumented%20functionality).cs
