@@ -4,15 +4,25 @@
 
 // From Wikipedia (https://en.wikipedia.org/wiki/Defensive_programming):
 // "Prefer exceptions to return codes
-// Generally speaking, it is preferable to throw intelligible exception messages that enforce part of your API contract and guide the client programmer instead of returning values that a client programmer is likely to be unprepared for and hence minimize their complaints and increase robustness and security of your software."
+// Generally speaking, it is preferable to throw intelligible exception messages that enforce part of your API contract and guide the client programmer instead of returning values
+// that a client programmer is likely to be unprepared for and hence minimize their complaints and increase robustness and security of your software."
 
 // From the book "OCA: Oracle Certified Associate Java SE 8 Programmer I Study Guide: Exam 1Z0-808":
-// "...try to avoid return codes. Return codes are commonly used in searches, so programmers are expecting them. In other methods, you will take your callers by surprise by returning a special value. An exception forces the program to deal with them or end with the exception if left unhandled, whereas a return code could be accidentally ignored and cause problems later in the program. An exception is like shouting, "Deal with me!""
+// "...try to avoid return codes. Return codes are commonly used in searches, so programmers are expecting them. In other methods, you will take your callers by surprise by
+// returning a special value. An exception forces the program to deal with them or end with the exception if left unhandled, whereas a return code could be accidentally ignored
+// and cause problems later in the program. An exception is like shouting, "Deal with me!""
 
 // From the book "Clean Code":
-// "It might seem odd to have a section about error handling in a book about clean code. Error handling is just one of those things that we all have to do when we program. Input can be abnormal and devices can fail. In short, things can go wrong, and when they do, we as programmers are responsible for making sure that our code does what it needs to do. The connection to clean code, however, should be clear. Many code bases are completely dominated by error handling. When I say dominated, I don't mean that error handling is all that they do. I mean that it is nearly impossible to see what the code does because of all of the scattered error handling. Error handling is important, but if it obscures logic, it's wrong.
+// "It might seem odd to have a section about error handling in a book about clean code. Error handling is just one of those things that we all have to do when we program.
+// Input can be abnormal and devices can fail. In short, things can go wrong, and when they do, we as programmers are responsible for making sure that our code does what it needs
+// to do. The connection to clean code, however, should be clear. Many code bases are completely dominated by error handling. When I say dominated, I don't mean that error handling
+// is all that they do. I mean that it is nearly impossible to see what the code does because of all of the scattered error handling. Error handling is important, but if it obscures
+// logic, it's wrong.
 // Use Exceptions Rather Than Return Codes
-// Back in the distant past there were many languages that didn't have exceptions. In those languages the techniques for handling and reporting errors were limited. You either set an error flag or returned an error code that the caller could check. The problem with these approaches is that they clutter the caller. The caller must check for errors immediately after the call. Unfortunately, it's easy to forget. For this reason it is better to throw an exception when you encounter an error. The calling code is cleaner. Its logic is not obscured by error handling."
+// Back in the distant past there were many languages that didn't have exceptions. In those languages the techniques for handling and reporting errors were limited.
+// You either set an error flag or returned an error code that the caller could check. The problem with these approaches is that they clutter the caller.
+// The caller must check for errors immediately after the call. Unfortunately, it's easy to forget. For this reason it is better to throw an exception when you encounter an error.
+// The calling code is cleaner. Its logic is not obscured by error handling."
 
 // To make a PB function throw an exception, fill the "Throws:" field in the function's header (signature) with class Exception or its descendant.
 
@@ -28,7 +38,8 @@ if li_rc = -1 then
     return -1
 end if
 
-// The tradition of returning success or failure codes (1/-1) dates back to the early days, when exceptions didn’t yet exist in PowerBuilder. But there’s no need to use horses in the age of automobiles! While we still check return codes from existing functions, you should take a modern approach when writing new code.
+// The tradition of returning success or failure codes (1/-1) dates back to the early days, when exceptions didn’t yet exist in PowerBuilder.
+// But there’s no need to use horses in the age of automobiles! While we still check return codes from existing functions, you should take a modern approach when writing new code.
 
 // HOW TO DEAL WITH FUNCTIONS WHICH THROW EXCEPTIONS
 
@@ -43,7 +54,8 @@ end if
 
 // 1. The error message describing the problem should include the class and script where the issue occurred.
 // 2. This information should be populated automatically, not manually typed by the developer each time.
-// 3. The code that throws the exception must be compact. Since it's technical code embedded within business logic, it should take no more than one line — similar to throw new Exception in Java or C#. Therefore, the following solution is absolutely NOT acceptable:
+// 3. The code that throws the exception must be compact. Since it's technical code embedded within business logic, it should take no more than one line —
+//          similar to throw new Exception in Java or C#. Therefore, the following solution is absolutely NOT acceptable:
 
 Exception l_ex
 
@@ -61,22 +73,30 @@ if [problem 2] then
    throw l_ex
 end if
 
-// Imagine a situation where the script throws many exceptions. Potentially, hundreds exceptions are thrown throughout the application. Each time, an exception object must be created, populated, and thrown. In such a scenario, the actual business logic becomes difficult to see amid all the clutter. This is precisely why exceptions are rarely used in PowerBuilder. Hopefully, a future version of PB will introduce a concise, one - line exception-throwing statement similar to those in Java or C#. In the meantime, I want to provide...
+// Imagine a situation where the script throws many exceptions. Potentially, hundreds exceptions are thrown throughout the application.
+// Each time, an exception object must be created, populated, and thrown. In such a scenario, the actual business logic becomes difficult to see amid all the clutter.
+// This is precisely why exceptions are rarely used in PowerBuilder.
+// Hopefully, a future version of PB will introduce a concise, one - line exception-throwing statement similar to those in Java or C#. In the meantime, I want to provide...
 
 // A READY SOLUTION WHICH SOLVES ALL THESE PROBLEMS
 
-// In the suggested solution, all three actions related to the exception—creation, population, and throwing—are combined into a single function named f_throw(). You can implement it as a public method of an NVO if you prefer, but I recommend using it as a global function, even though I generally avoid them. In this case, it effectively serves the role of the throw keyword found in other languages:
+// In the suggested solution, all three actions related to the exception—creation, population, and throwing—are combined into a single function named f_throw().
+// You can implement it as a public method of an NVO if you prefer, but I recommend using it as a global function, even though I generally avoid them.
+// In this case, it effectively serves the role of the throw keyword found in other languages:
 
 f_throw(PopulateError(0, "[error message]"))
 
-// As you can see, all the described conditions are met. The PopulateError() function  —called within the argument list of f_throw() — automatically captures key details about the exception, such as the class name, script name, and even the line number, and stores them in the Error object.
+// As you can see, all the described conditions are met. The PopulateError() function — called within the argument list of f_throw() — automatically captures key details
+// about the exception, such as the class name, script name, and even the line number, and stores them in the Error object.
 
 // The f_throw() function does three things:
 // 1. Creates an instance of Exception — more precisely, of its descendant n_ex (provided with the solution).
 // 2. Populates it with the data stored in the Error object.
 // 3. Throws the new exception.
 
-// The uf_msg() function (which should be called from within the exception handler) knows how to use this data to construct a clear and informative error message. Optionally, it can also write the error to a log table or file, or even send an email to the developer. These additional actions must be implemented individually — n_ex simply provides a placeholder for custom logic via the uf_write_to_log() function, which does nothing by default.
+// The uf_msg() function (which should be called from within the exception handler) knows how to use this data to construct a clear and informative error message.
+// Optionally, it can also write the error to a log table or file, or even send an email to the developer.
+// These additional actions must be implemented individually — n_ex provides a placeholder for custom logic via the uf_write_to_log() function, which does nothing by default.
 
 // Here's what it all looks like in practice:
 
@@ -88,7 +108,8 @@ if [problem 2] then f_throw(PopulateError(2, "[error message 2]"))
 
 // See how much shorter the code is? Now, nothing is stopping you from using exceptions throughout the entire application — you no longer have an excuse to keep returning -1!
 
-// The numeric code passed as the first argument to PopulateError() helps identify the specific problem spot when multiple exceptions may be thrown within the same script; simply pass 0 if you don't need that.
+// The numeric code passed as the first argument to PopulateError() helps identify the specific problem spot when multiple exceptions may be thrown within the same script;
+// simply pass 0 if you don't need that.
 
 // EXAMPLE OF USE:
 
@@ -106,7 +127,8 @@ Something terrible happened!
 
 // HOW TO ADD THE SOLUTION TO THE APPLICATION?
 
-// If you have added the DataWindow Spy (https://github.com/Ursego/DWSpy) then you already have the new exceptions functionality since the related objects are included in the Spy's PBL. Otherwise, do the next steps:
+// If you have added the DataWindow Spy (https://github.com/Ursego/DWSpy) then you already have n_ex and f_throw since they are included in the Spy's PBL.
+// Otherwise, do the next steps:
 
 // 1. Go to https://github.com/Ursego/DWSpy.
 // 2. Right-click spy.pbl and save it among other PBLs of your app.
@@ -186,7 +208,9 @@ end try
 
 // While the purpose of technical exceptionsis to inform the user about a bug, the purpose of business exceptions is to inform calling scripts about special business situations.
 
-// In general, f_throw is not supposed to be used for business exceptions. But you decide to use it, keep in mind that the try...catch block must distinguish it from a technical exception, and re-trow any technical exception as is to be handled in SystemError. For that, a convention must be used. For example, the massages of business exceptions should start with "###".
+// In general, f_throw is not supposed to be used for business exceptions.
+// But you decide to use it, keep in mind that the try...catch block must distinguish it from a technical exception, and re-trow any technical exception as is.
+// For that, a convention must be used. For example, massages of business exceptions should start with "###", massages of technical exceptions - never.
 
 // First, declare a constant in n_ex, for example:
 
@@ -199,7 +223,7 @@ if ll_row = 0 then
    f_throw(PopulateError(0, n_ex.NO_CUST_SELECTED))
 end if
 
-// The fragment of the calling script:
+// In the calling script:
 
 try
    uf_process_customers()
@@ -211,7 +235,8 @@ catch(n_ex e)
    end if
 end try
 
-// Using f_throw is very dangerous because a caught technical exception can be forgotten to be re-thrown. That will cut the chain of exception propagation and produce a hidden bug.
+// Using f_throw is very dangerous because a caught technical exception can be forgotten to be re-thrown.
+// That will cut the chain of exception propagation and produce a hidden bug.
 
 
 

@@ -37,5 +37,14 @@ lb_weekend = iin(ls_day, ls_days[])
 
 if iin(ll_employee_id, {123, 456, 789}) then
 
-// You can ask: how did I overload a global function in PowerScript? It's impossible! Of course, impossible. But for those who have read this:
+// Overloading of global functions is described here:
 // https://github.com/Ursego/PowerBuilder/blob/main/Overloading%20global%20functions%20(undocumented%20functionality).cs
+
+// HOW TO ADD THE SOLUTION TO THE APPLICATION?
+
+// If you have added the DataWindow Spy (https://github.com/Ursego/DWSpy) then you already have iin() since it's included in the Spy's PBL.
+// Otherwise, do the next steps:
+
+// 1. Go to https://github.com/Ursego/DWSpy.
+// 2. Right-click spy.pbl and save it among other PBLs of your app.
+// 3. Add spy.pbl to the end of your app’s library list. That PBL contains a few objects, but we need only iin.
