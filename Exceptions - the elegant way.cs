@@ -237,7 +237,3 @@ end try
 
 // Using f_throw is very dangerous because a caught technical exception can be forgotten to be re-thrown.
 // That will cut the chain of exception propagation and produce a hidden bug.
-
-
-
-
