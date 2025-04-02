@@ -23,6 +23,7 @@ ls_full_name = ls_first_name + " " + IfNull(ls_mid_name + " ", "") + ls_last_nam
 ls_err = "Invalid as_mode " + IfNull("'" + as_mode + "'", "NULL") + "." // prevent NULLifying of ls_err
 ls_err = "Invalid ai_mode '" + IfNull(String(ai_mode), "NULL") + "'." // cast to String since both the arguments must be of a same datatype
 lb_value_changed = (IfNull(ls_new_value, "~") <> IfNull(ls_old_value, "~")) // comparison when two NULLs are considered equal values and "~" is an illegal value
+lb_empty = (IfNull(ls_xxx, '') = '') // both NULL and empty string are treated as "no value" 
 lcb_clicked_button = IfNull(acb_clicked_button, cb_cancel) // works fine with objects
 
 // HOW TO ADD THE SOLUTION TO THE APPLICATION?

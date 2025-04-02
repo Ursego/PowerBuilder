@@ -155,7 +155,7 @@ RETURN 0 // error not handled - keep the standard processing of SystemError
 
 f_throw(PopulateError(0, ""))
 if IsNull(ls_xxx) then f_throw(PopulateError(0, "ls_xxx is NULL."))
-if IfNull(ls_xxx, '') = '' then f_throw(PopulateError(0, "ls_xxx is empty.")) // IfNull(): http://code.intfast.ca/viewtopic.php?t=5
+if IfNull(ls_xxx, '') = '' then f_throw(PopulateError(0, "ls_xxx is empty.")) // IfNull(): https://github.com/Ursego/PowerBuilder/blob/main/IfNull().cs
 if li_rc <> 1 then f_throw(PopulateError(0, "uf_xxx failed. Arguments: ..., ..."))
 if not IsValid(ads_xxx) then f_throw(PopulateError(0, "ads_xxx is invalid."))
 if ads_XXX.RowCount() < 1 then f_throw(PopulateError(0, "ads_XXX has no rows."))
