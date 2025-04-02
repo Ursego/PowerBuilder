@@ -37,8 +37,7 @@ lb_weekend = iin(ls_day, ls_days[])
 
 if iin(ll_employee_id, {123, 456, 789}) then
 
-// Overloading of global functions is described here:
-// https://github.com/Ursego/PowerBuilder/blob/main/Overloading%20global%20functions%20(undocumented%20functionality).cs
+// Overloading of global functions is described here: https://github.com/Ursego/PowerBuilder/blob/main/Overloading%20global%20functions%20(undocumented%20functionality).cs
 
 // HOW TO ADD THE SOLUTION TO THE APPLICATION?
 
