@@ -42,10 +42,10 @@ end choose
 // If the ItemChanged event is doing nothing else besides calling such functions, the script is extremely simple:
 
 choose case dwo.name
-case "birth_date"
-    return this.uf_itemchanged__birth_date(row)
+case "emp_status"
+    return this.uf_itemchanged__emp_status(row, data)
 case "country_id"
-    return this.uf_itemchanged__country_id(row)
+    return this.uf_itemchanged__country_id(row, data)
 end choose
 
 return 0
