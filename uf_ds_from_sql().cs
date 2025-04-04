@@ -115,7 +115,7 @@ return this.uf_ds_from_sql(as_sql, RETRIEVE_DS)
 // Obviously, first of all you need to add the exceptions mechanism to your app:
 // https://github.com/Ursego/PowerBuilder/blob/main/Exceptions%20-%20the%20elegant%20way.cs
 
-// Don't forget to fill the "Throws:" field in the header with n_ex in both the overloads!
+// Don't forget to fill the "Throws:" field in the header with n_ex in all the overloads!
 
 /**********************************************************************************************************************
 Dscr:       Returns a DataStore created dynamically by the supplied SELECT statement.
