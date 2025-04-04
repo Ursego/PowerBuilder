@@ -97,7 +97,7 @@ end if
 if ls_err <> '' then
    if IsValid(a_tr) then ls_err += "~r~n~r~nServerName = '" + a_tr.ServerName + "'; LogID = '" + a_tr.LogID + "'."
    if Len(as_sql) > 0 then ls_err += "~r~n~r~nSQL SELECT:~r~n~r~n" + as_sql
-   MessageBox("Error in uf_ds_from_sql()", ls_err)
+   MessageBox("Error in " + this.ClassName() + ".uf_ds_from_sql()", ls_err)
 end if
 
 return lds
