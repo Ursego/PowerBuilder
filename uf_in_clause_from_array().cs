@@ -18,7 +18,7 @@ ORA-01795: Maximum number of expressions in a list is 1000
 (last_name IN ('elem1', ..., 'elem1000') OR last_name IN ('elem1001', ..., 'elem2000') OR last_name IN ('elem2001', ..., 'elem2800'))"
 // If your DB is not Oracle, you can remove that functionality from the function (or keep it - it will work fine for any DB).
 
-// uf_in_clause_from_array() uses uf_replace_all() so add it to your utilities NVO.
+// The function uses uf_replace_all() so add it to your utilities NVO: https://github.com/Ursego/PowerBuilder/blob/main/uf_replace_all().cs
 // Or you can use another similar function which, probably, exists in your framework (like n_cst_string.of_GlobalReplace in PFC).
 
 // Here is the function's code:
