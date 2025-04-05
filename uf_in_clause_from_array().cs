@@ -1,5 +1,5 @@
 // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// The function dynamically builds an IN clause (ready to be used in a WHERE clause) from the passed field name and array of values.
+// uf_in_clause_from_array() dynamically builds an IN clause (ready to be used in a WHERE clause) from the passed field name and array of values.
 // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // I will immediately give an example that shows how the function works:
@@ -7,7 +7,6 @@
 ls_statuses_frag = gn_util.uf_in_clause_from_array("status", {"A", "N", "R"}) // returns "status IN ('A', 'N', 'R')"
 ls_depts_frag = gn_util.uf_in_clause_from_array("dept", {7, 11, 16}) // returns "dept IN (7, 11, 16)"
 ls_sql = "SELECT " + as_fields_to_print_csv + " FROM emp WHERE " + ls_statuses_frag + " AND " + ls_depts_frag
-lds_emp = gn_util.uf_ds_from_sql(ls_sql, true /* ab_retrieve */)
 
 // As you see in the first line, the string values are automatically ornamented with single quote marks, which is good for most databases.
 
@@ -40,7 +39,7 @@ Arg:        as_field - to be placed just before the IN keyword
 ***********************************************************************************************************************
 Ret:        string
 ***********************************************************************************************************************
-Developer:  Michael Zuskin -  http://linkedin.com/in/zuskin | https://github.com/Ursego/
+Developer:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego/
 **********************************************************************************************************************/
 char     lc_quote
 boolean  lb_OR_used = false

@@ -1,10 +1,10 @@
 // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// The function returns a DataStore created dynamically by the supplied SELECT statement.
+// uf_ds_from_sql() returns a DataStore created dynamically by the supplied SELECT statement.
 // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // It has two overloads.
 // One accepts a Transaction object through the a_tr argument.
-// Another overload doesn’t include that argument and uses SQLCA; it will likely be the most commonly used overload.
+// Another overload doesn’t include that argument and uses SQLCA. It will likely be the most commonly used overload.
 
 // The function takes a boolean argument ab_retrieve.
 // If it's true, the function will not only create a DS but also populate it, so you can work with the retrieved data immediately after calling the function.
@@ -55,7 +55,7 @@ Arg:        as_sql: the SELECT statement to create the DS from (without ";").
 ***********************************************************************************************************************
 Ret:         DataStore. The calling script must check it with IsValid()!!!!
 ***********************************************************************************************************************
-Developer:   Michael Zuskin -  http://linkedin.com/in/zuskin | https://github.com/Ursego/
+Developer:   Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego/
 **********************************************************************************************************************/
 long        ll_rc
 string      ls_err = ''

@@ -1,8 +1,8 @@
 // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// To be used instead of SetItemStatus() which doesn't change any old status to any other status
+// uf_set_row_status() replaces SetItemStatus() which doesn't change any old status to any other status
 // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// You can find the problem combinations in this table: https://i.postimg.cc/KjLHpBb8/Set-Item-Status.jpg
+// You can find the problem combinations in this table: https://i.postimg.cc/tJD7nrSK/Set-Item-Status.jpg
 // As can see, some statuses cannot be set directly — you need a second call to SetItemStatus() to achieve the desired result.  
 // One example: changing the row status from New! to NotModified! simply doesn’t work. You have to first set it to DataModified!, and only then can you change it to NotModified!.  
 // Some transitions are technically allowed but don’t behave as expected. For instance, changing from NewModified! to NotModified! will actually change to New!.  

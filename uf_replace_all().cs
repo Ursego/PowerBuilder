@@ -1,5 +1,5 @@
 // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// The function replaces all occurrences of a fragment within a string with another fragment.
+// uf_replace_all() replaces all occurrences of a fragment within a string with another fragment.
 // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Before creating this function, make sure a similar function doesn't already exists in your framework.
@@ -12,7 +12,7 @@ Arg:        rs_processed_string (ref) - the string in which replacement should t
             as_old_frag - the fragment to be replaced.
             as_new_frag - the fragment to replace with.
 ***********************************************************************************************************************
-Developer:  Michael Zuskin -  http://linkedin.com/in/zuskin | https://github.com/Ursego/
+Developer:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego/
 **********************************************************************************************************************/
 long ll_pos
 long ll_old_frag_len
