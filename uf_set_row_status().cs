@@ -51,11 +51,11 @@ Dscr:       Changes the item tatus of the passed row in a DataWindow.
             Call this function instead of SetItemStatus() which doesn't change any old status to any new status.
             Works only on the Primary! buffer; to work with other buffers, use the overloaded version.
 ***********************************************************************************************************************
-Developer:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego/
+Arg:        DataWindow     adw
+            long           al_row
+            DWItemStatus   a_desired_status
 ***********************************************************************************************************************
-Arg:  DataWindow     adw
-      long           al_row
-      DWItemStatus   a_desired_status
+Developer:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego/
 **********************************************************************************************************************/
 this.uf_set_row_status(adw, al_row, a_desired_status, Primary!)
 
