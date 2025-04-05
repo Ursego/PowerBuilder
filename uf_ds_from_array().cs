@@ -13,14 +13,18 @@
 
 // @@@ String:
 
+
+
 /**********************************************************************************************************************
-Dscr:       Gets a STRING array and creates a DS, the only column of which (named "the_col") contains the array's values.
+Dscr:       Gets a STRING array and creates a DS, the only column of which (named "the_col") contains the array's values:
+
             After the values, previously converted to a DataStore by this function, have been processed, they can be
             easily converted back to an array by accessing the DataStore's property object.the_col.current:
       
             lds_temp = uf_ds_from_array(ls_arr[])
             ...process the data in lds_temp...
-            ls_arr[] = lds_temp.object.the_col.current
+            ls_arr[] = lds_temp.object.the_col.current // <<< convert back to an array
+            destroy lds_temp
       
             For a LONG array, use another overload.
 ***********************************************************************************************************************
@@ -56,7 +60,8 @@ Dscr:       Gets a LONG array and creates a DS, the only column of which (named 
             
             lds_temp = uf_ds_from_array(ll_arr[])
             ...process the data in lds_temp...
-            ll_arr[] = lds_temp.object.the_col.current
+            ll_arr[] = lds_temp.object.the_col.current // <<< convert back to an array
+            destroy lds_temp
             
             For a STRING array, use another overload.
 ***********************************************************************************************************************
