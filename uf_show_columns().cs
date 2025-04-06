@@ -15,7 +15,7 @@ gn_util.uf_show_columns(dw_emp, {"emp_id", "list_name", "first_name"})
 // First fill the array according to the conditions, and then call the function once passing the array.
 
 // Before adding uf_show_columns(), create the Exceptions functionality (https://github.com/Ursego/DWSpy).
-// This way you will create the f_throw() and IfNull() functions that uf_show_columns() uses.
+// This way you will create the f_throw() and IfNull() functions that uf_show_columns() calls.
 
 // The source code:
 
