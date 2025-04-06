@@ -36,7 +36,6 @@ if dw_test.uf_row_exists(as_search_expr) then...
 
 /**********************************************************************************************************************
 Dscr:       Reports if the DW has a row which satisfies the passed search expression.
-            More details: http://code.intfast.ca/viewtopic.php?f=4&t=83
 ***********************************************************************************************************************
 Arg:        as_search_expr - the logical expression to search by
 ***********************************************************************************************************************
