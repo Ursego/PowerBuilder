@@ -15,19 +15,25 @@ if ll_row > 0 then...
 
 if dw_test.uf_row_exists(as_search_expr) then...
 
-// 2. If the search expression contains a bug, the standard Find() function displays the message "Expression is not valid," which only makes us frustrated. 
-// It doesn't indicate which script caused the error, nor does it show the invalid expression.
+// 2. If the search expression is wrong, the standard Find() function displays the message "Expression is not valid," which only makes us frustrated - which expression, where? 
+// Why the hell doesn't Find() indicate the failed script, nor does it show the invalid expression that could help us locate that script?
 
-// In contrast to Find(), uf_row_exists() clearly explains what went wrong and where.  
-// Thanks to the use of the exceptions mechanism, the error message provides the exact object, script, and even the line number.
-// You’ll also see the invalid expression passed to uf_row_exists().
+// In contrast to Find(), uf_row_exists() clearly explains what went wrong by showing the invalid expression.
+// That can help us to find the script. For example, if the expression is
+emp_id=12345OR emp_role=3
+// then we can globally search for the string
+uf_row_exists("emp_id=
+// to find the script which called the failed uf_row_exists(), and figure out why there is no space before the OR.
+// If the actual parameter passed to uf_row_exists() was a variable, this trick will not work, but we still can search by fragments of the expression which are probably static.
+// For example, a search for the next string can lead us to the goal, even if a few spots found:
+OR emp_role=
 
 // The error message from uf_row_exists() also displays the DataObject's name and suggests checking whether it includes all the fields mentioned in the expression.  
 // You might have forgotten to add a new field to the DataObject, and in that case, you can simply go and add it.
 
 // So, uf_row_exists() addresses the two most common reasons why Find() fails:
 //      A malformed expression (like "emp_id=12345OR emp_role=3").
-//      A non-existing field in the expression (like "emp_id=12345 OR emp_rle=3").
+//      A non-existing field in the expression (like "emp_id=12345 OR mp_role=3").
 
 // Before adding uf_show_columns(), create the Exceptions functionality (https://github.com/Ursego/DWSpy).
 // This way you will create the f_throw() and IfNull() functions that uf_row_exists() calls.
