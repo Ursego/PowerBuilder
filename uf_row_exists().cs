@@ -6,21 +6,20 @@
 
 // 1. Decreases the number of code lines because the calling script doesn't need to declare and then check the row number var. So, the fragment
 
-long ll_found_row
+long ll_row
 
-ll_found_row = dw_test.Find(as_search_expr, 1, dw_test.RowCount())
-if ll_found_row > 0 then...
+ll_row = dw_test.Find(as_search_expr, 1, dw_test.RowCount())
+if ll_row > 0 then...
 
 // shrinks to one line:
 
 if dw_test.uf_row_exists(as_search_expr) then...
 
-// 2. If the search expression contains a bug, the standard Find() function displays the message "Expression is not valid," which only makes us frustrated!  
+// 2. If the search expression contains a bug, the standard Find() function displays the message "Expression is not valid," which only makes us frustrated. 
 // It doesn't indicate which script caused the error, nor does it show the invalid expression.
 
 // In contrast to Find(), uf_row_exists() clearly explains what went wrong and where.  
 // Thanks to the use of the exceptions mechanism, the error message provides the exact object, script, and even the line number.
-
 // You’ll also see the invalid expression passed to uf_row_exists().
 
 // The error message from uf_row_exists() also displays the DataObject's name and suggests checking whether it includes all the fields mentioned in the expression.  
