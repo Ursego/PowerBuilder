@@ -13,9 +13,9 @@
 // So, the explanatory header comment must be added to it.  
 // That comment should clearly explain what is going on here, using a fragment like:
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// This function is overloaded. To see all the versions, open it in the "Edit Source" mode.
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// This function is overloaded. To see all the overloads, open the function in the "Edit Source" mode.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 // I’ve explained how to overload global functions, but only for cases where you need to override existing ones.
 // Avoid creating new global functions. Instead, define or modify classes, where function overloading is straightforward and all versions are immediately visible.

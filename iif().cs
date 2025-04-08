@@ -29,17 +29,69 @@ ls_name = iif(ll_row > 0, dw_emp.object.name[ll_row], "No name") // runtime erro
 // HOW TO ADD THE SOLUTION TO THE APPLICATION?
 
 // If you have added the DataWindow Spy (https://github.com/Ursego/DWSpy) then you already have iif() since it's included in the Spy's PBL.
-// Otherwise, do the next steps:
+// Otherwise, save the next code as iif.srf file, and import it to your app:
 
-// 1. Go to https://github.com/Ursego/DWSpy.
-// 2. Right-click spy.pbl and save it among other PBLs of your app.
-// 3. Add spy.pbl to the end of your app’s library list. That PBL contains a few objects, but we need only iif.
+HA$PBExportHeader$iif.srf
+global type iif from function_object
+end type
 
+forward prototypes
+global function powerobject iif (boolean ab_condition, powerobject apo_if_true, powerobject apo_if_false)
+global function datetime iif (boolean ab_condition, datetime adt_if_true, datetime adt_if_false)
+global function date iif (boolean ab_condition, date ad_if_true, date ad_if_false)
+global function time iif (boolean ab_condition, time at_if_true, time at_if_false)
+global function decimal iif (boolean ab_condition, decimal adc_if_true, decimal adc_if_false)
+global function long iif (boolean ab_condition, long al_if_true, long al_if_false)
+global function string iif (boolean ab_condition, string as_if_true, string as_if_false)
+end prototypes
 
+global function powerobject iif (boolean ab_condition, powerobject apo_if_true, powerobject apo_if_false);
+if ab_condition then return apo_if_true
+return apo_if_false
+end function
 
+global function datetime iif (boolean ab_condition, datetime adt_if_true, datetime adt_if_false);
+if ab_condition then return adt_if_true
+return adt_if_false
+end function
 
+global function date iif (boolean ab_condition, date ad_if_true, date ad_if_false);
+if ab_condition then return ad_if_true
+return ad_if_false
+end function
 
+global function time iif (boolean ab_condition, time at_if_true, time at_if_false);
+if ab_condition then return at_if_true
+return at_if_false
+end function
 
+global function decimal iif (boolean ab_condition, decimal adc_if_true, decimal adc_if_false);
+if ab_condition then return adc_if_true
+return adc_if_false
+end function
 
+global function long iif (boolean ab_condition, long al_if_true, long al_if_false);
+if ab_condition then return al_if_true
+return al_if_false
+end function
 
+global function string iif (boolean ab_condition, string as_if_true, string as_if_false);/**********************************************************************************************************************
+Dscr:	Returns the value of the 2nd or the 3rd arg depending on the expression in the 1st arg.
+      Details: https://github.com/Ursego/PowerBuilder/blob/main/iif().cs
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      This function is overloaded for string, long, decimal, date, time, datetime and PowerObject.
+      To see all the overloads, open the function in the "Edit Source" mode.
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+***********************************************************************************************************************
+Arg:	boolean - the expression to evaluate;
+		string - the value to return if the expression is true;
+		string - the value to return if the expression is false
+***********************************************************************************************************************
+Ret:	string
+***********************************************************************************************************************
+Dev:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego/
+**********************************************************************************************************************/
+if ab_condition then return as_if_true
 
+return as_if_false
+end function

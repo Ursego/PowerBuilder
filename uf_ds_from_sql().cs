@@ -53,9 +53,9 @@ Arg:        as_sql: the SELECT statement to create the DS from (without ";").
                   false = only create a DS, but don't retrieve.
             a_tr - Transaction object for created DS. To use SQLCA, call the overloaded version without this arg.
 ***********************************************************************************************************************
-Ret:         DataStore. The calling script must check it with IsValid()!!!!
+Ret:        DataStore. The calling script must check it with IsValid()!!!!
 ***********************************************************************************************************************
-Developer:   Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego/
+Developer:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego/
 **********************************************************************************************************************/
 long        ll_rc
 string      ls_err = ''

@@ -51,8 +51,81 @@ if iin(ll_employee_id, {123, 456, 789}) then
 // HOW TO ADD THE SOLUTION TO THE APPLICATION?
 
 // If you have added the DataWindow Spy (https://github.com/Ursego/DWSpy) then you already have iin() since it's included in the Spy's PBL.
-// Otherwise, do the next steps:
+// Otherwise, save the next code as iif.srf file, and import it to your app:
 
-// 1. Go to https://github.com/Ursego/DWSpy.
-// 2. Right-click spy.pbl and save it among other PBLs of your app.
-// 3. Add spy.pbl to the end of your app’s library list. That PBL contains a few objects, but we need only iin.
+HA$PBExportHeader$iin.srf
+global type iin from function_object
+end type
+
+forward prototypes
+global function boolean iin (string as_val, string as_arr[])
+global function boolean iin (powerobject ao_val, powerobject ao_arr[])
+global function boolean iin (long al_val, long al_arr[])
+end prototypes
+
+global function boolean iin (string as_val, string as_arr[]);
+int	i
+int	li_upper_bound
+
+li_upper_bound = UpperBound(as_arr[])
+for i = 1 to li_upper_bound
+	if as_arr[i] = as_val then
+		return true
+	end if
+next
+
+return false
+end function
+
+global function boolean iin (ref powerobject apo_val, ref powerobject apo_arr[]);
+int	i
+int	li_upper_bound
+
+li_upper_bound = UpperBound(apo_arr[])
+for i = 1 to li_upper_bound
+	if apo_arr[i] = apo_val then
+		return true
+	end if
+next
+
+return false
+end function
+
+global function boolean iin (long al_val, long al_arr[]);/**********************************************************************************************************************
+Dscr:	Reports if a value, passed as the 1st arg, appears in the array, passed as the 2nd arg.
+      Details: https://github.com/Ursego/PowerBuilder/blob/main/iin().cs
+
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      This function is overloaded for string, long and PowerObject.
+      To see all the overloads, open the function in the "Edit Source" mode.
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		Examples of use:
+		 
+		if iin(ll_cust_id, ll_best_customers_arr[]) then...
+		if iin(ls_city, ls_best_cities_arr[]) then...
+		
+		The values list can be inserted inline using brackets - {..., ...}:
+		
+		if iin(ll_cust_id, {123, 456, 789}) then...
+		if iin(ls_city, {"Toronto", "Ottawa"}) then...
+***********************************************************************************************************************
+Arg:	the value to check (can be string, long or PowerObject)
+		the array to search in (must be of the same type as the 1st arg)
+***********************************************************************************************************************
+Ret:	boolean
+***********************************************************************************************************************
+Dev:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego/
+**********************************************************************************************************************/
+int	i
+int	li_upper_bound
+
+li_upper_bound = UpperBound(al_arr[])
+for i = 1 to li_upper_bound
+	if al_arr[i] = al_val then
+		return true
+	end if
+next
+
+return false
+end function
