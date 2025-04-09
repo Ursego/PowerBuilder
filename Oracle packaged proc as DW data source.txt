@@ -2,13 +2,13 @@ This undocumented PowerBuilder feature may be useful only for developers working
 
 When you select "Stored Procedure" as the data source for your DataWindow, a dropdown lists all available stored procedures in the database.
 Unfortunately, this list includes only standalone procedures — it doesn't show those defined inside packages.
-To use a packaged stored procedure, we’ll have to trick PowerBuilder a little.
+To use a packaged stored procedure, you'll have to trick PowerBuilder a little.
 
-Let’s say you want to use my_package.my_proc. Here's what you need to do.
+Let's say you want to use my_package.my_proc. Here's what you need to do.
 
 Step 1: Create a temporary standalone procedure with the same name and arguments as the real packaged procedure, but with no logic — just use NULL; as the body.
 
-Step 2: In the DataWindow Painter, select this temporary standalone procedure from the dropdown as the data source (you may need to reconnect to the database if it doesn’t appear).
+Step 2: In the DataWindow Painter, select this temporary standalone procedure from the dropdown as the data source (you may need to reconnect to the database if it doesn't appear).
 
 Step 3: Save and close the DataWindow.
 
