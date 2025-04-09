@@ -46,11 +46,11 @@ lb_weekend = iin(as_day, ls_days[])
 
 if iin(ll_employee_id, {123, 456, 789}) then
 
-// Overloading of global functions is described here: https://github.com/Ursego/PowerBuilder/blob/main/Overloading%20global%20functions%20(undocumented%20functionality).cs
+// Overloading of global functions is described here: https://github.com/UrsegoPowerBuilder/blob/main/Overloading%20global%20functions%20(undocumented%20functionality).cs
 
 // HOW TO ADD THE SOLUTION TO THE APPLICATION?
 
-// If you have added the DataWindow Spy (https://github.com/Ursego/DWSpy) then you already have iin() since it's included in the Spy's PBL.
+// If you have added the DataWindow Spy (https://github.com/UrsegoDWSpy) then you already have iin() since it's included in the Spy's PBL.
 // Otherwise, save the next code as iif.srf file, and import it to your app:
 
 HA$PBExportHeader$iin.srf
@@ -67,6 +67,8 @@ global function boolean iin (string as_val, string as_arr[]);
 int	i
 int	li_upper_bound
 
+if IsNull(as_val) then return false
+
 li_upper_bound = UpperBound(as_arr[])
 for i = 1 to li_upper_bound
 	if as_arr[i] = as_val then
@@ -81,6 +83,8 @@ global function boolean iin (ref powerobject apo_val, ref powerobject apo_arr[])
 int	i
 int	li_upper_bound
 
+if IsNull(apo_val) then return false
+
 li_upper_bound = UpperBound(apo_arr[])
 for i = 1 to li_upper_bound
 	if apo_arr[i] = apo_val then
@@ -93,7 +97,7 @@ end function
 
 global function boolean iin (long al_val, long al_arr[]);/**********************************************************************************************************************
 Dscr:	Reports if a value, passed as the 1st arg, appears in the array, passed as the 2nd arg.
-      Details: https://github.com/Ursego/PowerBuilder/blob/main/iin().cs
+      Details: https://github.com/UrsegoPowerBuilder/blob/main/iin().cs
 
       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       This function is overloaded for string, long and PowerObject.
@@ -115,10 +119,12 @@ Arg:	the value to check (can be string, long or PowerObject)
 ***********************************************************************************************************************
 Ret:	boolean
 ***********************************************************************************************************************
-Dev:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego/
+Dev:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego
 **********************************************************************************************************************/
 int	i
 int	li_upper_bound
+
+if IsNull(al_val) then return false
 
 li_upper_bound = UpperBound(al_arr[])
 for i = 1 to li_upper_bound

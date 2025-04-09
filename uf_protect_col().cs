@@ -61,7 +61,7 @@ Dscr:       Protects DW column conditionally, using a logical expression - prote
 ************************************************************************************************************************************************
 Arg:        adw, as_col_name, as_protect_expr
 ************************************************************************************************************************************************
-Developer:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego/
+Developer:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego
 ***********************************************************************************************************************************************/
 string   ls_err = ''
 string   ls_modify_expr
@@ -105,7 +105,7 @@ return
 
 // As you see, if an error occurs, uf_protect_col() displays an error message using MessageBox().
 // While this isn’t the ideal approach, many developers prefer it because their applications don’t use exception handling.
-// However, if you want to follow the correct and recommended practice then add the exception mechanism described https://github.com/Ursego/DWSpy.
+// However, if you want to follow the correct and recommended practice then add the exception mechanism described https://github.com/UrsegoDWSpy.
 // Then, use the next, exception-based version of the function instead (it's the same overload, just using exceptions rather than MessageBox).
 // Don't forget to fill the "Throws:" field in the header with n_ex - in all the overloads.
 
@@ -118,7 +118,7 @@ Arg:        adw, as_col_name, as_protect_expr
 ************************************************************************************************************************************************
 Trows:      n_ex
 ************************************************************************************************************************************************
-Developer:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego/
+Developer:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego
 ***********************************************************************************************************************************************/
 string   ls_err
 string   ls_modify_expr
@@ -162,7 +162,7 @@ Dscr:       Protects DW column unconditionally.
 ************************************************************************************************************************************************
 Arg:        adw, as_col_name
 ************************************************************************************************************************************************
-Developer:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego/
+Developer:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego
 ***********************************************************************************************************************************************/
 
 this.uf_protect_col(adw, as_col_name, "1=1")
@@ -178,7 +178,7 @@ Dscr:       Protects DW columns, passed as an array, conditionally, using a logi
 ************************************************************************************************************************************************
 Arg:        adw, as_col_names[], as_protect_expr
 ************************************************************************************************************************************************
-Developer:  Michael Zuskin > http://linkedin.com/in/zuskin | http://code.intfast.ca/
+Developer:  Michael Zuskin > http://linkedin.com/in/zuskin | https://github.com/Ursego
 ***********************************************************************************************************************************************/
 int   i
 int   li_upper_bound
@@ -198,7 +198,7 @@ Dscr:       Protects DW columns, passed as an array, unconditionally.
 ************************************************************************************************************************************************
 Arg:        adw, as_col_names[]
 ************************************************************************************************************************************************
-Developer:  Michael Zuskin > http://linkedin.com/in/zuskin | http://code.intfast.ca/
+Developer:  Michael Zuskin > http://linkedin.com/in/zuskin | https://github.com/Ursego
 ***********************************************************************************************************************************************/
 
 this.uf_protect_col(adw, as_col_names[], "1=1")
