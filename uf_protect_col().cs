@@ -1,18 +1,18 @@
 // To make a DataWindow column non-editable, many developers mark the column as Protected (or use an expression for conditional protection) in the DataWindow Painter.
-// However, this is considered poor practice — I recommend using the function `uf_protect_col()`, whose code is provided below.
+// However, this is considered poor practice — I recommend using the function uf_protect_col(), whose code is provided below.
 
 // The function has four overloads which protect:
 //     * a single column either conditionally or unconditionally, and
 //     * multiple columns at once (passed as an array), also conditionally or unconditionally.
 
-// Call `uf_protect_col()` in the script that initializes your object — for example, in the `Open` event of a window or the constructor of a visual UserObject.
-// If you're using a framework, you likely have an event such as `ue_post_open` or `ue_post_constructor`, which is triggered after the object has been constructed.
+// Call uf_protect_col() in the script that initializes your object — for example, in the Open event of a window or the constructor of a visual UserObject.
+// If you're using a framework, you likely have an event such as ue_post_open or ue_post_constructor, which is triggered after the object has been constructed.
 
-// If later you want to remove protection unconditionally, simply pass the expression `"1=0"`.
+// If later you want to remove protection unconditionally, simply pass the expression "1=0".
 
 // @@@ Advantages
 
-// Using `uf_protect_col()` instead of setting the Protect property in the DataWindow Painter offers a few benefits:
+// Using uf_protect_col() instead of setting the Protect property in the DataWindow Painter offers a few benefits:
 
 // @ You have one centralized script to manage fields editability. By reviewing it, you get a clear overview of which columns are protected and under what conditions.
 // When using the DataWindow Painter, this information is hidden — you have to check each column’s properties individually.
@@ -21,7 +21,7 @@
 // It's best to manage the protection of all columns within a single script — this makes the overall logic easier to understand and maintain, and less error-prone.
 // Only apply protection from other scripts when absolutely necessary.
 
-// @ You can construct complex protection expressions dynamically and assign them in a cleaner way than with `Modify()`.
+// @ You can construct complex protection expressions dynamically and assign them in a cleaner way than with Modify().
 
 // @ Since the protection expressions are formed in PowerScript, it's easy to use constants instead of hardcoding values.
 
@@ -63,8 +63,8 @@ Arg:        adw, as_col_name, as_protect_expr
 ************************************************************************************************************************************************
 Developer:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego
 ***********************************************************************************************************************************************/
-string   ls_err = ''
-string   ls_modify_expr
+string ls_err = ''
+string ls_modify_expr
 
 constant string BG_COLOR__PROTECTED = "536870912" // 536870912 = Transparent; 12632256 = Silver; 67108864 = Button Face
 constant string BG_COLOR__EDITABLE = "1073741824" // 1073741824 = Windows Background; 16777215 = White
@@ -120,8 +120,8 @@ Trows:      n_ex
 ************************************************************************************************************************************************
 Developer:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego
 ***********************************************************************************************************************************************/
-string   ls_err
-string   ls_modify_expr
+string ls_err
+string ls_modify_expr
 
 constant string BG_COLOR__PROTECTED = "536870912" // 536870912 = Transparent; 12632256 = Silver; 67108864 = Button Face
 constant string BG_COLOR__EDITABLE = "1073741824" // 1073741824 = Windows Background; 16777215 = White
@@ -152,7 +152,7 @@ adw.Modify(ls_modify_expr)
 
 return
 
-// The next overloads are same for the MessageBox and the exception versions.
+// The next three overloads are same for the MessageBox and the exception versions.
 // Again, for the exception versions, don't forget to fill the "Throws:" field in the header with n_ex (and reflect that in the header comments).
 
 // === The overload which protects a single column unconditionally: ===

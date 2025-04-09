@@ -1,0 +1,23 @@
+This undocumented PowerBuilder feature may be useful only for developers working with Oracle databases.
+
+When you select "Stored Procedure" as the data source for your DataWindow, a dropdown lists all available stored procedures in the database.
+Unfortunately, this list includes only standalone procedures — it doesn't show those defined inside packages.
+To use a packaged stored procedure, we’ll have to trick PowerBuilder a little.
+
+Let’s say you want to use my_package.my_proc. Here's what you need to do.
+
+Step 1: Create a temporary standalone procedure with the same name and arguments as the real packaged procedure, but with no logic — just use NULL; as the body.
+
+Step 2: In the DataWindow Painter, select this temporary standalone procedure from the dropdown as the data source (you may need to reconnect to the database if it doesn’t appear).
+
+Step 3: Save and close the DataWindow.
+
+Step 4: Right-click the DataWindow and select "Edit Source".
+
+Step 5: Find the occurrence of my_proc and add my_package. in front of it (with the dot), so it becomes my_package.my_proc.
+
+Step 6: Save the DataWindow. You've just done the impossible!
+
+Step 7: Delete the temporary standalone procedure.
+
+You can use the same trick for the procedures used for insert, update, and delete operations (DataWindow Painter > menu "Rows" > "Stored Procedure Update").
