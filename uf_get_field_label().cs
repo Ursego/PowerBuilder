@@ -13,6 +13,7 @@ Dscr:       Receives a field name and returns its label (the text of the corresp
             The label is returned ready to be used in messages - without non-alphabetic characters ("&Name:" ==>> "Name").
             If <field name>_t doesn't exist (which is bad practice!), the function generates a user-friendly label
                 from the field name ("first_name" ==>> "First Name") to prevent ugly messages.
+            The assumption is that the DW fields are named following the snake_case naming convention like in many databases.
 ***********************************************************************************************************************
 Arg:        adw - the DataWindow to search in
             as_field_name
@@ -30,7 +31,7 @@ if iin(ls_field_label, {"!", "?"}) /* there is NO text object named "<field name
    uf_replace_all(ref ls_field_label, "_", " ") // "first_name" ==>> "first name"
    WordCap(ls_field_label) // "first name" ==>> "First Name"
 else // text object, named "<field name>_t", exists
-   // Remove semicolon which exsist in many labels on free-form DW:
+   // Remove semicolon which exsist in many labels on free-form DWs:
    if Right(ls_field_label, 1) = ":" then
       ls_field_label = Left(ls_field_label, Len(ls_field_label) - 1) // "First Name:" ==>> "First Name"
    end if
