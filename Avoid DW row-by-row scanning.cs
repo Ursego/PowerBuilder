@@ -18,7 +18,7 @@ MessageBox("HR", "There are " + String(ll_active_emp_count) + " active employees
 ld_latest_order_date = Date(ids_order.Describe("Evaluate('Max(order_date)', 0)"))
 MessageBox("Orders", "The last order was made in " + String(ld_latest_order_date, '"MMM DD, YYYY") + ".")
 
-// Count highlighted rows:
+// Count selected (highlighted) rows:
 
 ll_selected_count = Long(dw_emp.Describe("Evaluate('Sum(if(IsSelected(), 1, 0) for all)', 1)"))
 if ll_selected_count < 2 then MessageBox("New Team", "Please select at least 2 employees.")
@@ -28,10 +28,10 @@ if ll_selected_count < 2 then MessageBox("New Team", "Please select at least 2 e
 dw_order_status.SetSort('order_status A')
 dw_order_status.Sort()
 dw_order_status.GroupCalc()
-lb_duplicate_exists = ("1" = dw_order_status.Describe("Evaluate('Max(if(GetRow() <> 1 AND order_status[-1] = order_status, 1, 0))', 0)"))
+lb_duplicate_exists = ("1" = dw_order_status.Describe("Evaluate('Max(if(GetRow() <> 1 AND order_status = order_status[-1], 1, 0))', 0)"))
 if lb_duplicate_exists then MessageBox("Error", "Order Statuses must be unique.")
 
-// Put the same value in the field in all the rows:
+// Populate a field in all the rows with a same value:
 
 // Sometimes, we need to assign the same value to a field across all rows.  
 // For example, consider a coefficient that another field should be multiplied by.
@@ -50,10 +50,10 @@ next
 
 // *** GOOD code: ***
 
-// To make the assignment in one stroke, the field must be a computed field. The value that the field will return is assigned as follows:
+// To make the assignment at one stroke, it must be a computed field. The value that the field will return is assigned as follows:
 
 dw_XXX.object.c_coef_to_divide.Expression = String(ll_coef_to_divide)
-dw_XXX.GroupCalc() // recalc other computed fields which mention c_coef_to_divide in their expressions
+dw_XXX.GroupCalc() // recalc other computed fields - c_coef_to_divide can appear in their expressions (of course, converted from string to decimal)
 
 // @@@ Find and process rows which satisfy a criteria
 
@@ -77,7 +77,8 @@ do while true
        ll_row = dw_emp.Find(ls_search_expr, ll_row + 1, ll_row_count)
        if ll_row = 0 then exit
        // ...process the found row...
-       if ll_row = ll_row_count then exit // prevent eternal loop when the last row satisfies the search condition
+       if ll_row = ll_row_count then exit // prevent an eternal loop when the last row satisfies the search condition
 loop
 
-// Even though we are still looping, the number of iterations will be much smaller — possibly just a few, instead of hundreds.
+
+// Even though we are still looping, the number of iterations will be much smaller — possibly just a few or even one, instead of hundreds.
