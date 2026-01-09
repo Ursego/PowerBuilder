@@ -3,9 +3,10 @@
 // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Checking the field's DWItemStatus isn't always reliable: if the value was changed and then reverted to its original value, the column is still marked as DataModified!.
-// It's a heavy bug of PB! If the value was changed but later restored to its original state, the column must not be considered modified.
-// The only dependable way to determine whether a value has really changed is by comparing the current and original values - keeping in mind that either or both could be NULL.
-// And that is exactly what uf_col_modified() is doing.
+// It's a bug of PB which can lead to unnecessary DB updates when you send the value which is already in the DB table anyway.
+// If the value was changed in the DW but later restored to its original state, the column must not be considered modified.
+// The only dependable way to determine whether a column has really changed is by comparing its current and original values.
+// And that is exactly what uf_col_modified() does.
 
 // @@@ uf_col_modified()
 
@@ -15,7 +16,7 @@ Dscr:       Reports if the passed column has been modified, i.e. its value has b
             was restored, the field is NOT considered modified regardless of its DWItemStatus.
            
             If your script deals only with the current record of the Primary! buffer (i.e. it's a FORM DW),
-            then you can use the overloaded version with 2 arguments (adw & as_col).
+            use the overload with 2 arguments (adw & as_col).
 ***********************************************************************************************************************
 Arg:        DataWindow   adw
             long         al_row
@@ -62,13 +63,11 @@ if not IsNull(ls_old) and IsNull(ls_new) then return true
 return (ls_new <> ls_old)
 
 // Many times, the script works only with the current row in the Primary! buffer (for example, in a form DW, or in a multi-row DW without filtering or deletions).  
-// To handle that case, create an overloaded version with only two arguments — adw and as_col_name — and the following script:
+// To handle that case, create an overload with only two arguments — adw and as_col_name — and the following script:
 
 return uf_col_modified(adw, as_col, adw.GetRow(), Primary!)
 
-// @@@ uf_row_modified()
-
-// Reports if the passed row has been modified, i.e. at least one of its columns has been changed. 
+// @@@ uf_row_modified() 
 
 /**********************************************************************************************************************
 Dscr:       Reports if the passed row has been modified, i.e. at least one of its columns has been changed.
@@ -77,7 +76,7 @@ Dscr:       Reports if the passed row has been modified, i.e. at least one of it
             the column is NOT considered modified regardless of its DWItemStatus.
            
             If your script deals only with the current record of the Primary! buffer (i.e. it's a form DW),
-            then you can use the overloaded version with 1 argument only (adw).
+            use the overload with 1 argument only (adw).
 ***********************************************************************************************************************
 Arg:        adw            DataWindow
             al_row         long
@@ -108,6 +107,6 @@ next
 
 return false
 
-// The code of an overload to check only the current row in the Primary! buffer:
+// The overload with adw argument only checks the current row in the Primary! buffer:
 
 return uf_row_modified(adw, adw.GetRow(), Primary!)
