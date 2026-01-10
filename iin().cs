@@ -8,7 +8,7 @@ if i_day in ('SATURDAY', 'SUNDAY') then
    v_is_weekend := TRUE;
 end if;
 
-// Of course, we can mimic this in PowerScript using a CHOOSE CASE construction — the only cost is one additional line of code:
+// Of course, we can mimic this in PowerScript using a CHOOSE CASE — the only cost is one additional line of code:
 
 choose case as_day
 case 'SATURDAY', 'SUNDAY'
@@ -19,14 +19,14 @@ end choose
 
 v_is_weekend BOOLEAN := (i_day IN ('SATURDAY', 'SUNDAY'));
 
-// Unfortunately, we cannot do that in PowerScript since CHOOSE CASE doesn't return a value (as the 'switch' statements does in many language).
+// Unfortunately, we cannot do that in PowerScript since CHOOSE CASE doesn't return a value (as the 'switch' statements does in some languages like Kotlin).
 // To achieve the same, we need a Boolean expression with OR:
 
 lb_weekend = (as_day = 'SATURDAY' or as_day = 'SUNDAY')
 
-// That solution isn't very elegant — the same variable (ls_day) appears multiple times in the code. And what if you need to compare a variable against 20 values instead of just 2?
+// That solution isn't very elegant — the same variable (ls_day) appears multiple times in the code. And what if you need to compare a variable against 20 values, not just 2?
 
-// LET'S CREATE WHAT IS MISSING
+// LET'S CREATE THE MISSING
 
 // The proposed iin() function ("i"nternal "in") checks whether the value passed as the first argument exists in the array provided as the second argument:
 
@@ -134,4 +134,5 @@ for i = 1 to li_upper_bound
 next
 
 return false
+
 end function
