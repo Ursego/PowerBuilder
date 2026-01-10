@@ -22,7 +22,7 @@
 
 -- You can use the same trick for the procedures used for insert, update, and delete operations (DataWindow Painter > menu "Rows" > "Stored Procedure Update").
 
--- Here is a sample package showing how to use REF_CURSOR to pass data between Oracle and PowerBuilder:
+-- Here is a sample package showing procs for all the CRUD operations:
 
 CREATE OR REPLACE PACKAGE pkg_employee IS
     c_date_mask CONSTANT VARCHAR2(20) := 'YYYY MM DD';
@@ -104,3 +104,4 @@ CREATE OR REPLACE PACKAGE BODY pkg_employee IS
     END delete_employee;
 END pkg_employee;
 /
+
