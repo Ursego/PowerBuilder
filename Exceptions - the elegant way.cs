@@ -173,14 +173,14 @@ case "aaa"
 case "bbb"
    // do something else
 case else
-   // IfNull() is described here: 
+   // IfNull(<checked value>, <alternative value>) returns the first arg if it is NOT NULL; otherwise, it returns the second arg. Comes with spy.pbl.
    f_throw(PopulateError(0, "Argument as_xxx contains illegal value " + IfNull("'" + as_xxx + "'", "NULL") + ". It must be 'aaa', 'bbb' or 'ccc'."))
 end choose
 
-// A try...catch block (for business exceptions which not be to propagated outword):
+// A try...catch block (for business exceptions which don't have to propagate outword):
 
 try
-   
+   // ...your logic...
 catch(n_ex e)
    e.uf_msg()
 end try
@@ -189,53 +189,32 @@ end try
 
 // @@@ Technical exceptions:
 
-// They indicate bugs which should never occur and need to be fixed.
+// They indicate bugs which should never occur and need to be investigated and fixed.
 
 // Examples include:  
-// @ A required parameter is passed as empty to a function.  
-// @ A CHOOSE CASE block has no branch for a newly added customer status.  
-// @ A DataStore retrieves no rows when at least one is expected (likely an issue in the WHERE clause).
+// @ A required parameter is passed as empty to a function.
+// @ A CHOOSE CASE block has no branch for a newly added customer status.
+// @ A DataStore retrieves no rows when at least one is expected.
+// @ A DataStore retrieves more than one record when maximum one is expected.
 
-// Don't catch technical exceptions - let SystemError do that.
+// Throw technical exceptions, but don't catch - let SystemError do that.
 
 // @@@ Business exceptions:
 
-// They are not bugs and absolutely can happen during the normal execution of the application. In fact, they are the means to branch execution flow.
+// Not bugs. They absolutely can happen during the normal execution of the application. In fact, they are the means to branch execution flow.
+// A typical example is an Oracle PL/SQL user-defined EXCEPTION.
 
 // Examples of situations:
-// @ User tries to archive an order which has not been paid.
+// @ User tries to archive an unpaid order.
 // @ User clicks OK button when no row in a DW is selected.
 // @ User closes a window with unsaved changes.
 
-// While the purpose of technical exceptionsis to inform the user about a bug, the purpose of business exceptions is to inform calling scripts about special business situations.
+// While the purpose of technical exceptionsis to inform about bugs, the purpose of business exceptions is to handle special business situations.
 
-// In general, f_throw is not supposed to be used for business exceptions.
-// But you decide to use it, keep in mind that the try...catch block must distinguish it from a technical exception, and re-trow any technical exception as is.
-// For that, a convention must be used. For example, massages of business exceptions should start with "###", massages of technical exceptions - never.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// f_throw should not be used for business exceptions.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-// First, declare a constant in n_ex, for example:
+// The goal of f_throw() is calling your function without "li_rc = ...". However, with business exceptions, you DO have to process the returned info
+// (be it a return value, a ref argument or an exception), so f_throw() provides no advantage, just adds mess.
 
-public constant string NO_CUST_SELECTED = "### NO CUST SELECTED"
-
-// Let's say, you have uf_process_customers() function. Use the contant this way:
-
-ll_row = dw_cust.GetSelectedRow(0)
-if ll_row = 0 then
-   f_throw(PopulateError(0, n_ex.NO_CUST_SELECTED))
-end if
-
-// In the calling script:
-
-try
-   uf_process_customers()
-catch(n_ex e)
-   if e.GetMessage() = n_ex.NO_CUST_SELECTED then
-      MessageBox("No customers selected", "Please select a customer.")
-   else
-      f_throw(PopulateError(0, e.GetMessage())) // it's a technical exception - re-throw it!!!
-   end if
-end try
-
-// Using f_throw is very dangerous because a caught technical exception can be forgotten to be re-thrown.
-
-// That will cut the chain of exception propagation and produce a hidden bug.
