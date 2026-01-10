@@ -24,13 +24,13 @@
 // The caller must check for errors immediately after the call. Unfortunately, it's easy to forget. For this reason it is better to throw an exception when you encounter an error.
 // The calling code is cleaner. Its logic is not obscured by error handling."
 
-// To make a PB function throw an exception, fill the "Throws:" field in the function's header (signature) with class Exception or its descendant.
+// To throw an exception from a PB function, fill the "Throws:" field in the function's header (signature) with class Exception or its descendant.
 
-// When exceptions mechanism is in use, functions are called in the simplest possible way:
+// When the exceptions mechanism is in use, functions are called in the simplest possible way:
 
 uf_do_something()
 
-// As you see, there is no terrible code impurities like
+// There is no terrible mess like
 
 li_rc = uf_do_something()
 if li_rc = -1 then
@@ -39,50 +39,50 @@ if li_rc = -1 then
 end if
 
 // The tradition of returning success or failure codes (1/-1) dates back to the early days, when exceptions didn’t yet exist in PowerBuilder.
-// But there’s no need to use horses in the age of automobiles! While we still check return codes from existing functions, you should take a modern approach when writing new code.
+// But there’s no need to use horses in the era of cars! While we still check return codes from existing functions, you should take a modern approach when creating new functions.
 
 // HOW TO DEAL WITH FUNCTIONS WHICH THROW EXCEPTIONS
 
 // The rule is simple: if script A calls script B and script B throws an exception, then script A has exactly two options, enforced by the compiler:  
 
-// 1. Handle the exception. To do this, script A must wrap the call to script B in a try...catch block.  
-// 2. Propagate the exception outward. In that case, the responsibility of handling the exception shifts to the script that calls script A.
+// 1. Handle the exception within the script. To do this, script A must wrap the call to script B in a try...catch block.  
+// 2. Propagate the exception outward. In that case, the responsibility of handling the exception shifts to the caller.
 
 // WHAT'S WRONG WITH BUILT-IN PB EXCEPTIONS?
 
 // Throwing an exception in PB 8 or later is easy, but in my opinion, there are three important requirements that must be considered:
 
 // 1. The error message describing the problem should include the class and script where the issue occurred.
-// 2. This information should be populated automatically, not manually typed by the developer each time.
+// 2. This information should be populated automatically - you don't want to type it manually each time you throw an exception.
 // 3. The code that throws the exception must be compact. Since it's technical code embedded within business logic, it should take no more than one line —
-//          similar to throw new Exception in Java or C#. Therefore, the following solution is absolutely NOT acceptable:
+//          similar to "throw new Exception" in Java or C#. Therefore, the following solution is absolutely NOT acceptable:
 
 Exception l_ex
 
 [...code...]
 if [problem 1] then
    l_ex = create Exception
-   l_ex.SetMessage("[error message 1] in function uf_XXX of class n_YYY")
+   l_ex.SetMessage("[error message 1] in n_XXX.uf_YYY ")
    throw l_ex
 end if
 
 [...code...]
 if [problem 2] then
    l_ex = create Exception
-   l_ex.SetMessage("[error message 2] in function uf_XXX of class n_YYY")
+   l_ex.SetMessage("[error message 2] in n_XXX.uf_YYY ")
    throw l_ex
 end if
 
 // Imagine a situation where the script throws many exceptions. Potentially, hundreds exceptions are thrown throughout the application.
-// Each time, an exception object must be created, populated, and thrown. In such a scenario, the actual business logic becomes difficult to see amid all the clutter.
-// This is precisely why exceptions are rarely used in PowerBuilder.
+// Each time, an exception object must be created, populated, and thrown. In such a scenario, the actual business logic becomes difficult to see in all the clutter.
+// This is precisely why exceptions are rarely used in PowerBuilder - even though everybody agdee with the idea.
 // Hopefully, a future version of PB will introduce a concise, one - line exception-throwing statement similar to those in Java or C#. In the meantime, I want to provide...
 
 // A READY SOLUTION WHICH SOLVES ALL THESE PROBLEMS
 
-// In the suggested solution, all three actions related to the exception—creation, population, and throwing—are combined into a single function named f_throw().
+// In the suggested solution, all three actions on the exception — creation, population, and throwing — are combined into a single function named f_throw().
 // You can implement it as a public method of an NVO if you prefer, but I recommend using it as a global function, even though I generally avoid them.
-// In this case, it effectively serves the role of the throw keyword found in other languages:
+// In this case, it effectively plays the role of the throw keyword found in other languages:
 
 f_throw(PopulateError(0, "[error message]"))
 
@@ -90,8 +90,8 @@ f_throw(PopulateError(0, "[error message]"))
 // about the exception, such as the class name, script name, and even the line number, and stores them in the Error object.
 
 // The f_throw() function does three things:
-// 1. Creates an instance of Exception — more precisely, of its descendant n_ex (provided with the solution).
-// 2. Populates it with the data stored in the Error object.
+// 1. Creates an instance of Exception — more precisely, of its descendant n_ex (I will provide it later).
+// 2. Populates it from the Error object (that's why we called PopulateError).
 // 3. Throws the new exception.
 
 // The uf_msg() function (which should be called from within the exception handler) knows how to use this data to construct a clear and informative error message.
@@ -113,14 +113,14 @@ if [problem 2] then f_throw(PopulateError(2, "[error message 2]"))
 
 // EXAMPLE OF USE:
 
-// Let’s say the following code appears on line 17 of the function wf_massage_data() in the window w_emp:
+// Let’s say the following code appears on line 17 of the function wf_data_is_ok_before_closing_window() in the window w_emp:
 
 f_throw(PopulateError(3, "Something terrible happened!"))
 
 // The message, displayed by uf_msg(), will have the title "EXCEPTION 3 TROWN" and the following wording:
 
 Window: w_emp
-Script: wf_massage_data
+Script: wf_data_is_ok_before_closing_window
 Line: 17
 
 Something terrible happened!
@@ -173,6 +173,7 @@ case "aaa"
 case "bbb"
    // do something else
 case else
+   // IfNull() is described here: 
    f_throw(PopulateError(0, "Argument as_xxx contains illegal value " + IfNull("'" + as_xxx + "'", "NULL") + ". It must be 'aaa', 'bbb' or 'ccc'."))
 end choose
 
@@ -236,4 +237,5 @@ catch(n_ex e)
 end try
 
 // Using f_throw is very dangerous because a caught technical exception can be forgotten to be re-thrown.
+
 // That will cut the chain of exception propagation and produce a hidden bug.
