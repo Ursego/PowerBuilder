@@ -2,25 +2,22 @@
 // uf_ds_from_sql() returns a DataStore created dynamically by the supplied SELECT statement.
 // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// It has two overloads.
+// It has three overloads.
 // One accepts a Transaction object through the a_tr argument.
 // Another overload doesn’t include that argument and uses SQLCA. It will likely be the most commonly used overload.
 
 // The function takes a boolean argument ab_retrieve.
 // If it's true, the function will not only create a DS but also populate it, so you can work with the retrieved data immediately after calling the function.
-// I recommend creating constants for this argument in the same class where you create the function:
-constant boolean RETRIEVE_DS = true
-constant boolean DONT_RETRIEVE_DS = false
 
 // More information and examples of use are provided in the header comment of the function.
 
 // ERRORS HANDLING
 
-// If an error occurs, the function displays an error message and returns a DataStore which has not been initialized, so the calling script must check it with IsValid().
+// If an error occurs, the function displays an error message and returns a DataStore which has not been instantiated, so the calling script must check it with IsValid().
 // That is not the best way, but, probably, most developers will choose it since they don't use exceptions.
 
 // The correct and preferable way is to use the exceptions mechanism: https://github.com/Ursego/PowerBuilder/blob/main/Exceptions%20-%20the%20elegant%20way.cs
-// I will provide both variations, so you can choose the one you prefer.
+// I will provide both variations, so you can decide which you prefer.
 
 // @@@ WITHOUT exceptions:
 
@@ -47,11 +44,15 @@ Dscr:       Returns a DataStore created dynamically by the supplied SELECT state
             ls_sql = "SELECT " + as_list_of_fields_to_print + " FROM emp WHERE " + ls_statuses_frag + " AND " + ls_depts_frag
             lds_emp = gn_util.uf_ds_from_sql(ls_sql)
 ***********************************************************************************************************************
-Arg:        as_sql: the SELECT statement to create the DS from (without ";").     
+Arg:        as_sql:
+                  The SELECT statement to create the DS from (without ";").     
             ab_retrieve:
                   true = create a DS, and retrieve data immediately;
                   false = only create a DS, but don't retrieve.
-            a_tr - Transaction object for created DS. To use SQLCA, call the overloaded version without this arg.
+                  There are overloads which retrieve by default, without passing true through this argument.
+            a_tr:
+                  Transaction object for the created DS
+                  There are overloads which use SQLCA by default, without passing SQLCA through this argument.
 ***********************************************************************************************************************
 Ret:        DataStore. The calling script must check it with IsValid()!!!!
 ***********************************************************************************************************************
@@ -102,13 +103,16 @@ end if
 
 return lds
 
-// The overload which uses SQLCA; it has only 2 arguments - as_sql and ab_retrieve, but not a_tr:
+// Create 3 additional overloads:
 
+// With argument as_sql (probably, it will be the most frequently used overload):
+return this.uf_ds_from_sql(as_sql, TRUE /* retrieve data immediately */, SQLCA)
+
+// With arguments as_sql and ab_retrieve:
 return this.uf_ds_from_sql(as_sql, ab_retrieve, SQLCA)
 
-// The overload which uses SQLCA and retrieves; it has only 1 argument - as_sql, but not ab_retrieve and a_tr:
-
-return this.uf_ds_from_sql(as_sql, RETRIEVE_DS)
+// With arguments as_sql and a_tr:
+return this.uf_ds_from_sql(as_sql, TRUE /* retrieve data immediately */, a_tr)
 
 // @@@ WITH exceptions:
 
@@ -140,11 +144,15 @@ Dscr:       Returns a DataStore created dynamically by the supplied SELECT state
             ls_sql = "SELECT " + as_list_of_fields_to_print + " FROM emp WHERE " + ls_statuses_frag + " AND " + ls_depts_frag
             lds_emp = gn_util.uf_ds_from_sql(ls_sql)
 ***********************************************************************************************************************
-Arg:        as_sql: the SELECT statement to create the DS from (without ";").     
+Arg:        as_sql:
+                  The SELECT statement to create the DS from (without ";").     
             ab_retrieve:
                   true = create a DS, and retrieve data immediately;
                   false = only create a DS, but don't retrieve.
-            a_tr - Transaction object for created DS. To use SQLCA, call the overloaded version without this arg.
+                  There are overloads which retrieve by default, without passing true through this argument.
+            a_tr:
+                  Transaction object for the created DS
+                  There are overloads which use SQLCA by default, without passing SQLCA through this argument.
 ***********************************************************************************************************************
 Ret:        DataStore
 ***********************************************************************************************************************
@@ -187,9 +195,10 @@ end try
 
 return lds
 
-// The overloads use the same code as the exceptionless overloads — just make them throw n_ex.
+// The overloads use the same code as the exceptionless overloads (scroll up to "Create 3 additional overloads") — just change their headers to throw n_ex.
 
 // Generally speaking, using SQL statements on the client side is not a good practice.
 // The client should call a stored procedure that encapsulates any existing (or potential) complexity and keeps it on the server side.  
 // But if you have no choice — for example, when maintaining an application where all the SQL is handled in PowerBuilder —
 //      then uf_ds_from_sql() avoids creation of a large number of DataObjects, used only once.
+
