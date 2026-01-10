@@ -7,7 +7,7 @@
 ls_sql = iif(Len(as_err_msg) > 0, "ROLLBACK", "COMMIT")
 
 // This approach helps keep scripts shorter by eliminating unnecessary if...else constructions. Each use of iif() saves four extra lines of code.
-// Here's how the fragment would look without iif():
+// Here's how the fragment would look like without iif():
 
 if Len(as_err_msg) > 0 then
    ls_sql = "ROLLBACK"
@@ -94,4 +94,5 @@ Dev:  Michael Zuskin - http://linkedin.com/in/zuskin | https://github.com/Ursego
 if ab_condition then return as_if_true
 
 return as_if_false
+
 end function
