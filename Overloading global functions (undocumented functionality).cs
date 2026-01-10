@@ -24,8 +24,9 @@
 // I've explained how to overload global functions, but do that only to enhance existing ones.
 // Avoid creating new global functions. Instead, define or modify classes, where function overloading is straightforward and all the versions are immediately visible.
 
-// However, this repository describes three global functions I created from scratch, each with overloads - iif(), iin() and IfNull().
+// However, this repository describes three global functions I created from scratch, each with overloads - IfNull() (from https://github.com/Ursego/DWSpy), iif() and iin().
 // This was done intentionally because these functions are purely technical (not business-related) and don't belong to particular areas of functionality.
 // They represent features that should have been implemented in PowerBuilder using keywords or operators.  
 // I use these functions so often in my code that I almost see them as part of the PowerScript language itself.
 // If I had to prefix them with an object or class name every time, it would make my code unnecessarily verbose.
+
