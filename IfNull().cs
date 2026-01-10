@@ -1,7 +1,4 @@
-// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// The function IfNull(<checked value>, <alternative value>) returns the checked value if it is NOT NULL; otherwise, it returns the alternative value.
-// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+// The function IfNull(<checked value>, <alternative value>) returns the first arg if it is NOT NULL; otherwise, it returns the second arg.
 // It mimics the nvl() function in Oracle. The name nvl stands for "Null VaLue".  
 // In SQL Server and Sybase, a similar function is called IsNull(), which is confusing since it's not a Boolean function.  
 // C# uses ?? — the null-coalescing operator.  
@@ -34,6 +31,7 @@ lcb_clicked_button = IfNull(acb_clicked_button, cb_cancel) // works fine with ob
 // 1. Go to https://github.com/Ursego/DWSpy.
 // 2. Right-click spy.pbl and save it among other PBLs of your app.
 // 3. Add spy.pbl to the end of your app’s library list. That PBL contains a few objects, but we need only IfNull.
+
 
 
 
