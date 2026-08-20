@@ -168,7 +168,7 @@ DataStore   lds
 as_sql = Trim(as_sql)
 
 try
-   if as_sql = '' then f_throw(PopulateError(1, "as_sql is empty string.")) // https://github.com/Ursego/PowerBuilder/blob/main/uf_in_clause_from_array().cs
+   if as_sql = '' then f_throw(PopulateError(1, "as_sql is empty string."))
    if IsNull(as_sql) then f_throw(PopulateError(2, "as_sql is null."))
    if not IsValid(a_tr) then f_throw(PopulateError(3, "a_tr is not valid."))
 
