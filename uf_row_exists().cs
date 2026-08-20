@@ -35,7 +35,7 @@ OR emp_role=
 //      A malformed expression (like "emp_id=12345OR emp_role=3").
 //      A non-existing field in the expression (like "emp_id=12345 OR mp_role=3").
 
-// Before adding uf_show_columns(), create the Exceptions functionality (https://github.com/Ursego/DWSpy).
+// Before adding uf_row_exists(), create the Exceptions functionality (https://github.com/Ursego/DWSpy).
 // This way you will create the f_throw() and IfNull() functions that uf_row_exists() calls.
 
 // Create the function in the base DW ancestor:
