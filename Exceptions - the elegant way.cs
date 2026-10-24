@@ -2,17 +2,22 @@
 // To pass errors from functions outwards, throw exceptions rather than return a success/error code (like 1/-1).
 // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// From Wikipedia (https://en.wikipedia.org/wiki/Defensive_programming):
-// "Prefer exceptions to return codes
-// Generally speaking, it is preferable to throw intelligible exception messages that enforce part of your API contract and guide the client programmer instead of returning values
+// The tradition of returning success or failure codes (like 1/-1) dates back to the early days, when exceptions didn’t yet exist in PowerBuilder.
+// This tradition has significant drawbacks: it makes code more error-prone (just forget to check a return code, and the error goes unnoticed), longer, and messier.
+// Of course, we have no choice but to check return codes from existing functions, but let’s take a modern approach when creating new ones.
+// Let’s take advantage of modern tools rather than stick to old habits!
+// Please read the following quotes.
+
+// * From Wikipedia (https://en.wikipedia.org/wiki/Defensive_programming):
+// "Generally speaking, it is preferable to throw intelligible exception messages that enforce part of your API contract and guide the client programmer instead of returning values
 // that a client programmer is likely to be unprepared for and hence minimize their complaints and increase robustness and security of your software."
 
-// From the book "OCA: Oracle Certified Associate Java SE 8 Programmer I Study Guide: Exam 1Z0-808":
-// "...try to avoid return codes. Return codes are commonly used in searches, so programmers are expecting them. In other methods, you will take your callers by surprise by
+// * From the book "OCA: Oracle Certified Associate Java SE 8 Programmer I Study Guide: Exam 1Z0-808":
+// "Try to avoid return codes. Return codes are commonly used in searches, so programmers are expecting them. In other methods, you will take your callers by surprise by
 // returning a special value. An exception forces the program to deal with them or end with the exception if left unhandled, whereas a return code could be accidentally ignored
 // and cause problems later in the program. An exception is like shouting, "Deal with me!""
 
-// From the book "Clean Code":
+// * From the book "Clean Code":
 // "It might seem odd to have a section about error handling in a book about clean code. Error handling is just one of those things that we all have to do when we program.
 // Input can be abnormal and devices can fail. In short, things can go wrong, and when they do, we as programmers are responsible for making sure that our code does what it needs
 // to do. The connection to clean code, however, should be clear. Many code bases are completely dominated by error handling. When I say dominated, I don't mean that error handling
@@ -28,34 +33,30 @@
 
 // When the exceptions mechanism is in use, functions are called in the simplest possible way:
 
-uf_do_something()
+uf_fly(ls_animal)
 
 // There is no terrible mess like
 
-li_rc = uf_do_something()
+li_rc = uf_fly(ls_animal)
 if li_rc = -1 then
-    // ...display an error message...
-    return -1
+    MessageBox("Ohhh!!!", "Cows cannot fly!")
+    return -1 // ...which must be checked in the calling script as well, and so on, and so on... until somebody forgets and the error is silently swallen...
 end if
 
-// The tradition of returning success or failure codes (1/-1) dates back to the early days, when exceptions didn’t yet exist in PowerBuilder.
-// But there’s no need to use horses in the era of cars! While we still check return codes from existing functions, you should take a modern approach when creating new functions.
+// HOW TO DEAL WITH FUNCTIONS THAT THROW EXCEPTIONS
 
-// HOW TO DEAL WITH FUNCTIONS WHICH THROW EXCEPTIONS
+// The rule is simple: if script A calls script B and script B throws an exception, script A has exactly two options, enforced by the compiler:
 
-// The rule is simple: if script A calls script B and script B throws an exception, then script A has exactly two options, enforced by the compiler:  
-
-// 1. Handle the exception within the script. To do this, script A must wrap the call to script B in a try...catch block.  
-// 2. Propagate the exception outward. In that case, the responsibility of handling the exception shifts to the caller.
+// 1. Handle the exception within the script. To do this, script A must wrap the call to script B in a try...catch block.
+// 2. Propagate the exception outward. In this case, the responsibility for handling it shifts to the caller.
 
 // WHAT'S WRONG WITH BUILT-IN PB EXCEPTIONS?
 
-// Throwing an exception in PB 8 or later is easy, but in my opinion, there are three important requirements that must be considered:
+// Throwing an exception in PB 8 or later is easy, but in my opinion, three important requirements must be considered.
 
-// 1. The error message describing the problem should include the class and script where the issue occurred.
-// 2. This information should be populated automatically - you don't want to type it manually each time you throw an exception.
-// 3. The code that throws the exception must be compact. Since it's technical code embedded within business logic, it should take no more than one line —
-//          similar to "throw new Exception" in Java or C#. Therefore, the following solution is absolutely NOT acceptable:
+// First, the code that throws the exception must be compact.
+// Since it's technical code embedded in business logic, it should take no more than one line, like "throw new Exception" in Java or C#.
+// Therefore, the following solution is absolutely NOT acceptable:
 
 Exception l_ex
 
@@ -75,30 +76,64 @@ end if
 
 // Imagine a situation where the script throws many exceptions. Potentially, hundreds exceptions are thrown throughout the application.
 // Each time, an exception object must be created, populated, and thrown. In such a scenario, the actual business logic becomes difficult to see in all the clutter.
-// This is precisely why exceptions are rarely used in PowerBuilder - even though everybody agdee with the idea.
-// Hopefully, a future version of PB will introduce a concise, one - line exception-throwing statement similar to those in Java or C#. In the meantime, I want to provide...
+// This is precisely why exceptions are rarely used in PowerBuilder - even though everybody agdees with the idea.
+// Hopefully, a future version of PB will introduce a concise, one-line exception-throwing statement similar to those in Java or C#.
+// In the meantime, I want to provide a very simple f_throw() global function.
+// It returns (None), accepts as_msg String argument and thows Exception. The code:
+Exception	l_ex
+l_ex = create Exception
+l_ex.SetMessage(as_msg)
+throw l_ex
+// You can implement this function as a public method of an NVO if you prefer, but I recommend making it a global function, even though I generally avoid them.
+// In this case, it effectively plays the role of the throw keyword found in other languages.
+
+// Previously, our uf_fly() function returned -1:
+
+if as_animal = "Cow" then return -1
+
+// Now it throws an exception:
+
+if as_animal = "Cow" then f_throw("Cows cannot fly!")
+
+// And the usage bacame super-simple, as we wanted:
+
+uf_fly(ls_animal)
+
+// Notice another advantage: error handling is now encapsulated within the function.
+// It determines which error message to display without requiring the caller to interpret error codes.
+// This is especially useful when a function can fail for different reasons or is called from multiple places:
+// 		instead of returning -1, -2, -3, etc., and making each caller map these codes to error messages, the function handles error reporting itself.
+// This eliminates code duplication and reduces the risk of bugs.
+
+// STILL NOT PERFECT...
+
+// This simple f_throw() function is already useful — certainly better than nothing.
+// However, it lacks two important features available in C# and Java:
+
+// 1. The error message should identify the class and script where the exception was thrown.
+// 2. This information should be captured automatically, without requiring you to specify it manually every time you throw an exception.
 
 // A READY SOLUTION WHICH SOLVES ALL THESE PROBLEMS
 
-// In the suggested solution, all three actions on the exception — creation, population, and throwing — are combined into a single function named f_throw().
-// You can implement it as a public method of an NVO if you prefer, but I recommend using it as a global function, even though I generally avoid them.
-// In this case, it effectively plays the role of the throw keyword found in other languages:
+// In the solution below, all three operations - creating, populating, and throwing the exception - are combined into an enhanced version of f_throw():
 
 f_throw(PopulateError(0, "[error message]"))
 
-// As you can see, all the described conditions are met. The PopulateError() function — called within the argument list of f_throw() — automatically captures key details
-// about the exception, such as the class name, script name, and even the line number, and stores them in the Error object.
+// The PopulateError() function, called within the argument list of f_throw(), automatically captures key details about the exception,
+//		such as the class name, script name, and even the line number, and stores them in the Error object.
 
-// The f_throw() function does three things:
-// 1. Creates an instance of Exception — more precisely, of its descendant n_ex (I will provide it later).
-// 2. Populates it from the Error object (that's why we called PopulateError).
-// 3. Throws the new exception.
+// Then, f_throw() function performs three operations:
+// 1. Creates an instance of Exception, more precisely, its descendant n_ex (which I will introduce later).
+// 2. Populates that exception object from the Error object.
+// 3. Throws the exception.
 
-// The uf_msg() function (which should be called from within the exception handler) knows how to use this data to construct a clear and informative error message.
-// Optionally, it can also write the error to a log table or file, or even send an email to the developer.
-// These additional actions must be implemented individually — n_ex provides a placeholder for custom logic via the uf_write_to_log() function, which does nothing by default.
+// The uf_msg() function, called from within the exception handler, uses this data to construct a clear, informative error message.
+// Optionally, it can also log the error to a database table or file, or even send an email to the developer.
 
-// Here's what it all looks like in practice:
+// These additional actions must be implemented separately.
+// The n_ex object provides a placeholder for custom logic through the uf_write_to_log() function, which does nothing by default.
+
+// Here's what it looks like in practice:
 
 [...code...]
 if [problem 1] then f_throw(PopulateError(1, "[error message 1]"))
@@ -106,14 +141,12 @@ if [problem 1] then f_throw(PopulateError(1, "[error message 1]"))
 [...code...]
 if [problem 2] then f_throw(PopulateError(2, "[error message 2]"))
 
-// See how much shorter the code is? Now, nothing is stopping you from using exceptions throughout the entire application — you no longer have an excuse to keep returning -1!
-
-// The numeric code passed as the first argument to PopulateError() helps identify the specific problem spot when multiple exceptions may be thrown within the same script;
-// simply pass 0 if you don't need that.
+// The numeric code passed as the first argument to PopulateError() helps identify the specific point of failure when multiple exceptions can be thrown within the same script.
+// Pass 0 if you don't need this information.
 
 // EXAMPLE OF USE:
 
-// Let’s say the following code appears on line 17 of the function wf_data_is_ok_before_closing_window() in the window w_emp:
+// Suppose the following code appears on line 17 of the function wf_data_is_ok_before_closing_window() in the window w_emp:
 
 f_throw(PopulateError(3, "Something terrible happened!"))
 
@@ -125,13 +158,15 @@ Line: 17
 
 Something terrible happened!
 
+// If you pass 0 instead of the 3, the title will be "EXCEPTION TROWN".
+
 // HOW TO ADD THE SOLUTION TO THE APPLICATION?
 
 // If you have added the DataWindow Spy (https://github.com/Ursego/DWSpy) then you already have n_ex and f_throw since they are included in the Spy's PBL.
 // Otherwise, do the next steps:
 
-// 1. Go to https://github.com/Ursego/DWSpy.
-// 2. Right-click spy.pbl and save it among other PBLs of your app.
+// 1. Go to https://github.com/Ursego/DWSpy/blob/main/spy.pbl.
+// 2. Right-click "View raw" and save spy.pbl among other PBLs of your app.
 // 3. Add spy.pbl to the end of your app’s library list. That PBL contains a few objects, but we need only n_ex and f_throw.
 // 4. Add to the Application object's SystemError script:
 
@@ -189,15 +224,15 @@ end try
 
 // @@@ Technical exceptions:
 
-// They indicate bugs which should never occur and need to be investigated and fixed.
+// They are bugs which should never occur and need to be investigated and fixed.
 
 // Examples include:  
-// @ A required parameter is passed as empty to a function.
+// @ A required parameter is empty.
 // @ A CHOOSE CASE block has no branch for a newly added customer status.
 // @ A DataStore retrieves no rows when at least one is expected.
 // @ A DataStore retrieves more than one record when maximum one is expected.
 
-// Throw technical exceptions, but don't catch - let SystemError do that.
+// Throw technical exceptions, but don't catch them - let SystemError do that.
 
 // @@@ Business exceptions:
 
@@ -217,4 +252,3 @@ end try
 
 // The goal of f_throw() is calling your function without "li_rc = ...". However, with business exceptions, you DO have to process the returned info
 // (be it a return value, a ref argument or an exception), so f_throw() provides no advantage, just adds mess.
-
